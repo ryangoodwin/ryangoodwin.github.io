@@ -1,8 +1,49 @@
+
+---
+---
 <html>
-	<head>
-	</head>
-	<body>
-		<h1>Hello internet</h1>
-		<p>This is a test page</p>
-	</body>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" ></script>
+    <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+    body {
+        background-color:black;
+        background-image:url('/assets/images/space.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        padding:0 0 0 0;
+    }
+    #awesome {
+        position:relative;
+        width: 90%;
+        text-align:center;
+        height: auto;
+        margin-left:auto;
+        margin-right:auto;
+        font-family: 'Cookie', cursive;
+        color:white;
+
+        font-size: 200px;    /* old */
+        font-size: 25vmin;
+        text-shadow: black 0.1em 0.1em 0.2em;
+        z-index:4;
+
+    }
+    </style>
+    <script>
+    $(window).resize(function(){
+
+        $('#awesome').css({
+            position:'absolute',
+            left: ($(window).width() - $('#awesome').outerWidth())/2,
+            top: ($(window).height() - $('#awesome').outerHeight())/2
+        });
+
+    });
+    </script>
+</head>
+<body onload="$(window).resize();">
+    <div id='awesome'>You're awesome</div>
+</body>
 </html>
