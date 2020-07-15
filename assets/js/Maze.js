@@ -238,6 +238,7 @@ function createMazeViewer(canvas, options) {
     }, options);
     let maze = undefined;
     let generator = undefined;
+    let lastTime = (new Date()).getTime();
     function init() {
         maze = new SquareMaze(opts.mazeWidth, opts.mazeHeight, opts.cellWidth);
         switch (opts.generator) {
@@ -251,14 +252,30 @@ function createMazeViewer(canvas, options) {
                 generator = new RecursiveBacktracker(maze);
                 break;
         }
+        lastTime = (new Date()).getTime();
     }
     ;
     let animationTimeout = undefined;
+    const timeForStep = 10;
     function animate() {
-        const { finished, maze, processing } = generator.step();
-        maze.draw(canvas.getContext("2d"), processing, opts.color);
+        const time = (new Date()).getTime();
+        let timeSinceLast = time - lastTime;
+        let finished = false;
+        if (timeSinceLast > timeForStep) {
+            let maze = null;
+            let processing = null;
+            while (timeSinceLast > timeForStep) {
+                const results = generator.step();
+                finished = results.finished;
+                maze = results.maze;
+                processing = results.processing;
+                timeSinceLast -= timeForStep;
+            }
+            lastTime = time - timeSinceLast;
+            maze.draw(canvas.getContext("2d"), processing, opts.color);
+        }
         if (!finished) {
-            animationTimeout = setTimeout(animate, 5);
+            animationTimeout = setTimeout(animate, 17);
         }
     }
     ;
