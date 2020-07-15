@@ -275,7 +275,7 @@ function createMazeViewer(canvas, options) {
             maze.draw(canvas.getContext("2d"), processing, opts.color);
         }
         if (!finished) {
-            animationTimeout = setTimeout(animate, 17);
+            requestAnimationFrame(animate);
         }
     }
     ;
