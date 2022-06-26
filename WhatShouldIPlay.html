@@ -1,29 +1,66 @@
 <html>
     <head>
-        <script type="text/javascript" src="./assets/js/GamePicker.js"></script>
+        <script src="./app.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            label, button {
-                display: block;
-            }
-
-            button {
-                margin-top : 20px;
-            }
-
-            #game {
-                padding-top: 20px;
-            }
 
             #changePlayers {
                 display : none;
             }
 
+            .checkbox input[type="checkbox"] {
+                display: none;
+            }
+
+            .checkbox label {
+                position: relative;
+                display: inline-block;
+            }
+
+            input + label {
+                z-index: 999;
+            }
+
+            input + label::before {
+                content: "◻";
+            }
+
+            input:checked + label::before {
+                content: "🐗";
+            }
+
+            label, button {
+                font-size: 2em;
+            }
+
+            .main {
+                margin:20px;
+            }
+
+            img {
+                width:100%;
+                height:auto;
+            }
+
+
         </style>
     </head>
     <body>
-        <form id="people"></form>
-        <button id="changePlayers">Change player list</button>
-        <button id="go">Pick a game!</button>
-        <div id="game"></div>
+        <div class="pure-g">
+            <div class="main pure-u-1-1 pure-form-stacked">
+                <form class="pure-form">
+                    <fieldset id="people">
+                        <legend>Who is playing?</legend>
+                    </fieldset>
+                    <fieldset>
+                        <button id="go" class="pure-button">Pick a game!</button>
+                    </fieldset>
+                </form>
+                
+                <div id="game"></div>
+            </div>
+        </div>
+
     </body>
 </html>

@@ -45,10 +45,11 @@ function extractGames(xml) {
     for(item of items) {
         if(item.getAttribute("subtype") === "boardgame") {
             games.push({
+                id : item.getAttribute("objectid"),
                 name : item.getElementsByTagName("name").item(0).textContent,
                 minPlayers : item.getElementsByTagName("stats").item(0).getAttribute("minplayers"),
                 maxPlayers : item.getElementsByTagName("stats").item(0).getAttribute("maxplayers"),
-                thumbnail : item.getElementsByTagName("thumbnail").item(0).textContent,
+                thumbnail : item.getElementsByTagName("image").item(0).textContent,
             });
         }
     }
@@ -72,7 +73,9 @@ function setupUI(games) {
     const gameButton = document.getElementById("go");
     const playersButton = document.getElementById("changePlayers");
 
-    gameButton.addEventListener("click", () => {
+    gameButton.addEventListener("click", event => {
+        event.preventDefault();
+
         const game = pickGame(games, numPlayers);
 
         const container = document.getElementById("game");
@@ -81,20 +84,18 @@ function setupUI(games) {
         if(game !== undefined) {
             const pre = document.createElement("pre");
             pre.innerHTML = game.name;
+
+            const link = document.createElement("a");
+            link.setAttribute("href", `https://boardgamegeek.com/boardgame/${game.id}`);
+            link.innerHTML = "View on BGG";
+
             container.appendChild(pre);
+            container.appendChild(link);
             container.appendChild(createImage(game.thumbnail));
             gameButton.innerHTML = "Different game";
             document.getElementById("people").style.display = "none";
-            document.getElementById("changePlayers").style.display = "block";
             document.getElementById("game").style.display = "block";
         }
-    });
-
-    playersButton.addEventListener("click", () => {
-        document.getElementById("people").style.display = "block";
-        document.getElementById("changePlayers").style.display = "none";
-        gameButton.innerHTML = "Pick a game";
-        document.getElementById("game").style.display = "none";
     });
 
     function updateNumPlayers() {
@@ -109,6 +110,9 @@ function createImage(thumbnail) {
 }
 
 function createTickBox(name) {
+    const container = document.createElement("div");
+    container.classList.add("checkbox");
+
     const tickbox = document.createElement("input");
     tickbox.type = "checkbox";
     tickbox.name = name;
@@ -116,10 +120,14 @@ function createTickBox(name) {
     tickbox.id = name;
 
     const label = document.createElement("label");
-    label.for = name;
-    label.appendChild(tickbox);
+    label.setAttribute("for", name);
     label.appendChild(document.createTextNode(name));
-    return label;
+
+    
+    container.appendChild(tickbox);
+    container.appendChild(label);
+
+    return container;
 }
 
 function createLabel(name) {
